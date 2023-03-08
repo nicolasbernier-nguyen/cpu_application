@@ -1,11 +1,10 @@
-import 'package:cpu_application/manual.dart';
-import 'package:cpu_application/tutorial.dart';
+import 'manual.dart';
 import 'package:flutter/material.dart';
 import 'home.dart';
-import 'programs.dart';
+import 'edit.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatefulWidget {
@@ -24,7 +23,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     _selectedPageIndex = 0;
-    _pages = [Home(), Tutorial(), Programs(), Manual()];
+    _pages = [const Home(), const Manual(), const Edit()];
     _pageController = PageController(initialPage: _selectedPageIndex);
   }
 
@@ -42,23 +41,25 @@ class _MyAppState extends State<MyApp> {
           body: PageView(
             controller: _pageController,
             children: _pages,
+            onPageChanged: (_selectedPageIndex) {
+              WidgetsBinding.instance.focusManager.primaryFocus?.unfocus();
+            },
           ),
           bottomNavigationBar: BottomNavigationBar(
               type: BottomNavigationBarType.fixed,
-              items: [
+              items: const [
                 BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.school), label: 'Tutorial'),
+                    icon: Icon(Icons.book), label: 'Manual'),
                 BottomNavigationBarItem(
-                    icon: Icon(Icons.list), label: 'Programs'),
-                BottomNavigationBarItem(icon: Icon(Icons.book), label: 'Manual')
+                    icon: Icon(Icons.list), label: 'Program'),
               ],
               currentIndex: _selectedPageIndex,
               onTap: (selectedPageIndex) {
                 setState(() {
                   _selectedPageIndex = selectedPageIndex;
                   _pageController.animateToPage(selectedPageIndex,
-                      duration: Duration(milliseconds: 500),
+                      duration: const Duration(milliseconds: 500),
                       curve: Curves.easeOut);
                 });
               })),
